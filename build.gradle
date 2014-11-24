@@ -1,0 +1,60 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'war'
+apply plugin: 'idea'
+
+idea {
+    module {
+        excludeDirs += new File(project.projectDir, '.idea')
+
+        excludeDirs -= project.projectDir
+        excludeDirs -= project.buildDir
+        project.buildDir.listFiles().each {
+            excludeDirs += it
+        }
+
+        //TODO make resourceDirs once gradle supports it:
+        //http://forums.gradle.org/gradle/topics/idea_plugin_resource_folders_support
+        sourceDirs += file('props')
+//        resourceDirs += file('props')
+    }
+}
+
+
+sourceCompatibility = 1.7
+version = '0.1.0'
+def baseName = 'ideabug'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+String springVersion = '4.1.2.RELEASE'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    compile 'org.codehaus.groovy:groovy-all:2.3.7'
+    //core spring
+    compile('org.springframework:spring-context:' + springVersion)
+    compile('org.springframework:spring-beans:' + springVersion)
+    compile('org.springframework:spring-core:' + springVersion)
+    compile('org.springframework:spring-webmvc:' + springVersion)
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile("org.spockframework:spock-core:0.7-groovy-2.0") {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+    }
+    testRuntime("org.spockframework:spock-spring:0.7-groovy-2.0") {
+        exclude group: 'org.spockframework', module: 'spock-core'
+    }
+    testCompile 'org.springframework:spring-test:' + springVersion
+
+}
+

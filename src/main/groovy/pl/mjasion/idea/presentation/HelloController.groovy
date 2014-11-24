@@ -1,14 +1,17 @@
 package pl.mjasion.idea.presentation
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class HelloController {
 
+    @Value('${test.someValue}') String someValue
+
     @RequestMapping('/')
     String hello() {
-        return 'hello'
+        return someValue
     }
 
 }
