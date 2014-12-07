@@ -12,17 +12,10 @@ idea {
         project.buildDir.listFiles().each {
             excludeDirs += it
         }
-
-        //TODO make resourceDirs once gradle supports it:
-        //http://forums.gradle.org/gradle/topics/idea_plugin_resource_folders_support
-        sourceDirs += file('props')
-//        resourceDirs += file('props')
     }
 }
 
-
 sourceCompatibility = 1.7
-version = '0.1.0'
 def baseName = 'ideabug'
 
 repositories {
@@ -55,6 +48,13 @@ dependencies {
         exclude group: 'org.spockframework', module: 'spock-core'
     }
     testCompile 'org.springframework:spring-test:' + springVersion
-
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'props'
+        }
+    }
+}
