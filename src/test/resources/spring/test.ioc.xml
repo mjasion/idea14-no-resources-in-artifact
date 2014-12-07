@@ -21,5 +21,6 @@
         <property name="ignoreAcceptHeader" value="true"/>
     </bean>
 
+    <import resource="main.ioc.xml"/>
 
 </beans>
